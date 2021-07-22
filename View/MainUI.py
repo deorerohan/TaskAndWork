@@ -2,6 +2,8 @@
 Main application file for importing all required model classes and geting work done here
 """
 # Internal imports
+from View.WorkTableView import WorkTableView
+from View.TasksTableView import TaskTableView
 from View.Resources.ApplicationStrings import (
     MainApplicationStrings,
     TasksInstructionStrings,
@@ -64,11 +66,19 @@ class TasknWork:
             instructions.CreateInstructions(WorkInstructionStrings.Options)
         )
 
+    def WorksTableView(self):
+        workView = WorkTableView()
+        self.layout[LayoutNames.Box12].update(workView.CreateWorkView())
+
     def TaskInstructions(self):
         instructions = InstructionsView()
         self.layout[LayoutNames.Box21].update(
             instructions.CreateInstructions(TasksInstructionStrings.Options)
         )
+
+    def TasksTableView(self):
+        tableView = TaskTableView()
+        self.layout[LayoutNames.Box22].update(tableView.CreateTasksView())
 
     def MainFunction(self):
         """Function with main application loop"""
@@ -76,5 +86,7 @@ class TasknWork:
         self.PopulateLayouts()
         self.WorkInstructions()
         self.TaskInstructions()
+        self.WorksTableView()
+        self.TasksTableView()
         console = Console()
         console.print(self.layout)

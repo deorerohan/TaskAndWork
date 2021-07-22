@@ -1,5 +1,4 @@
 from rich.table import Table
-from rich.layout import Layout
 from rich.panel import Panel
 
 
