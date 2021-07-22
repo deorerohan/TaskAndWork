@@ -1,12 +1,17 @@
+from Model.Work import WorkTable
+
 from rich.table import Table
 from rich.panel import Panel
 
+
 class WorkTableView:
     def __init__(self) -> None:
-        pass
+        self.WorkController = WorkTable()
 
     def CreateWorkView(self) -> Panel:
         """Some example content."""
+        self.WorkController.ReadAllWork()
+
         table = Table(title="Star Wars Movies", expand=True, show_edge=False)
 
         table.add_column("Released", justify="right", style="cyan", no_wrap=True)
@@ -21,5 +26,5 @@ class WorkTableView:
             "Dec 15, 2017", "Star Wars Ep. V111: The Last Jedi", "$1,332,539,889"
         )
 
+        self.WorkController.AddNewWork("tasks description", "task category")
         return Panel(table)
-
