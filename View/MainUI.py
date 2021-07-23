@@ -2,6 +2,7 @@
 Main application file for importing all required model classes and geting work done here
 """
 # Internal imports
+from View.UserMessagesView import UserMessagesView
 from View.WorkTableView import WorkTableView
 from View.TasksTableView import TaskTableView
 from View.Resources.ApplicationStrings import (
@@ -31,6 +32,7 @@ class TasknWork:
         self.layout = Layout(name=LayoutNames.Root)
 
         self.layout.split(
+            Layout(name=LayoutNames.Margin, size=1),
             Layout(name=LayoutNames.Header, size=3),
             Layout(name=LayoutNames.Main, ratio=1),
             Layout(name=LayoutNames.Footer, size=7),
@@ -47,6 +49,8 @@ class TasknWork:
         self.layout[LayoutNames.Body].split(
             Layout(name=LayoutNames.Box12), Layout(name=LayoutNames.Box22)
         )
+
+        self.userMessageView = UserMessagesView(self.layout[LayoutNames.Footer])
 
     def PopulateLayouts(self):
         self.layout[LayoutNames.Header].update(
@@ -67,8 +71,8 @@ class TasknWork:
         )
 
     def WorksTableView(self):
-        workView = WorkTableView()
-        self.layout[LayoutNames.Box12].update(workView.CreateWorkView())
+        self.workView = WorkTableView(self.userMessageView)
+        self.layout[LayoutNames.Box12].update(self.workView.CreateWorkView())
 
     def TaskInstructions(self):
         instructions = InstructionsView()
@@ -77,8 +81,24 @@ class TasknWork:
         )
 
     def TasksTableView(self):
-        tableView = TaskTableView()
-        self.layout[LayoutNames.Box22].update(tableView.CreateTasksView())
+        self.tableView = TaskTableView()
+        self.layout[LayoutNames.Box22].update(self.tableView.CreateTasksView())
+
+    def MainLoop(self, console):
+        isContinue = True
+        while isContinue:
+            console.print(self.layout)
+            opt = console.input()
+            if opt == "1":
+                # Create work
+                task = console.input("Create work : ")
+                category = console.input("category : ")
+                self.workView.CreateWork(task, category)
+            elif opt == "2":
+                # Update work
+                pass
+            elif len(opt) > 3:
+                isContinue = False
 
     def MainFunction(self):
         """Function with main application loop"""
@@ -89,4 +109,4 @@ class TasknWork:
         self.WorksTableView()
         self.TasksTableView()
         console = Console()
-        console.print(self.layout)
+        self.MainLoop(console)

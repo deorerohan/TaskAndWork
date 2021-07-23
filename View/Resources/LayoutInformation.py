@@ -1,4 +1,5 @@
 class LayoutNames:
+    Margin = "Margin"
     Root = "root"
     Main = "main"
     Header = "header"
@@ -13,3 +14,4 @@ class LayoutNames:
 
 class LayoutStyles:
     Title = "white on blue"
+    InstructionsStyle = "green"

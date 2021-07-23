@@ -1,12 +1,16 @@
+from View.UserMessagesView import UserMessagesView
 from Model.Work import WorkTable
 
 from rich.table import Table
 from rich.panel import Panel
 
+import threading
+
 
 class WorkTableView:
-    def __init__(self) -> None:
+    def __init__(self, userMessageView) -> None:
         self.WorkController = WorkTable()
+        self.userMessageView = userMessageView
 
     def CreateWorkView(self) -> Panel:
         """Some example content."""
@@ -26,5 +30,10 @@ class WorkTableView:
             "Dec 15, 2017", "Star Wars Ep. V111: The Last Jedi", "$1,332,539,889"
         )
 
-        self.WorkController.AddNewWork("tasks description", "task category")
         return Panel(table)
+
+    def CreateWork(self, work, category) -> None:
+        self.WorkController.AddNewWork(work, category)
+        self.userMessageView.ShowUserMessage(f"Work created : {work}")
+        timer = threading.Timer(5, self.userMessageView.RemoveMessage)
+        timer.start()

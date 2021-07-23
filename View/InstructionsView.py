@@ -1,3 +1,5 @@
+from View.Resources.LayoutInformation import LayoutStyles
+
 from rich.table import Table
 from rich.panel import Panel
 
@@ -16,4 +18,4 @@ class InstructionsView:
         for op in options:
             table.add_row(op)
 
-        return Panel(table)
+        return Panel(table, border_style=LayoutStyles.InstructionsStyle)
