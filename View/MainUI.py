@@ -99,6 +99,10 @@ class TasknWork:
                 work = self.workView.GetWorkByID(workID)
                 work.description = console.input(f"Current description : {work.description} : ")
                 self.workView.UpdateWork(work)
+            elif opt == "3":
+                workID = int(console.input("ID to display : "))
+                work = self.workView.GetWorkByID(workID)
+                self.workView.DisplayWork(work)
             elif len(opt) > 3:
                 isContinue = False
 

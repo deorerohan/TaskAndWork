@@ -7,7 +7,7 @@ class MainApplicationStrings:
 
 
 class WorkInstructionStrings:
-    Options = ["1. Create work", "2. Update work"]
+    Options = ["1. Create work", "2. Update work", "3. Display work"]
 
 
 class TasksInstructionStrings:

@@ -1,10 +1,21 @@
 from View.UserMessagesView import UserMessagesView
-from Model.Work import WorkTable
+from Model.Work import Work, WorkTable
 
 from rich.table import Table
 from rich.panel import Panel
 
 import threading
+
+class WorkDetailView:
+    def GetWorkDetailView(work) -> Table:
+        table = Table(expand=True, show_edge=False)
+
+        table.add_column("ID", justify="right", style="cyan", no_wrap=True)
+        table.add_column("Creation Date", style="magenta")
+        table.add_column("Description", style="green")
+        table.add_column("Category", style="yellow")
+        table.add_row(str(work.workID), work.creationDate, work.description, work.category)
+        return table
 
 
 class WorkTableView:
@@ -35,13 +46,17 @@ class WorkTableView:
         timer = threading.Timer(5, self.userMessageView.RemoveMessage)
         timer.start()
 
-    def GetWorkByID(self, id):
+    def GetWorkByID(self, id) -> Work:
         item = [work for work in self.WorkController.worksList if work.workID == id]
         if len(item) == 1:
             return item[0]
         return None
 
-    def UpdateWork(self, work):
+    def UpdateWork(self, work) -> None:
         self.WorkController.UpdateWork(work)
         # Need to update table for new values
+    
+    def DisplayWork(self, work) -> None:
+        # Function to display complete details about work
+        self.userMessageView.ShowUserMessage(WorkDetailView.GetWorkDetailView(work))
         
