@@ -15,25 +15,33 @@ class WorkTableView:
     def CreateWorkView(self) -> Panel:
         """Some example content."""
         self.WorkController.ReadAllWork()
+        
+        self.table = Table(expand=True, show_edge=False)
 
-        table = Table(title="Star Wars Movies", expand=True, show_edge=False)
+        self.table.add_column("ID", justify="right", style="cyan", no_wrap=True)
+        self.table.add_column("Creation Date", style="magenta")
+        self.table.add_column("Description", style="green")
+        self.table.add_column("Category", style="yellow")
 
-        table.add_column("Released", justify="right", style="cyan", no_wrap=True)
-        table.add_column("Title", style="magenta")
-        table.add_column("Box Office", style="green")
+        for work in self.WorkController.worksList:
+            self.table.add_row(str(work.workID), work.creationDate, work.description, work.category)
 
-        table.add_row(
-            "Dec 20, 2019", "Star Wars: The Rise of Skywalker", "$952,110,690"
-        )
-        table.add_row("May 25, 2018", "Solo: A Star Wars Story", "$393,151,347")
-        table.add_row(
-            "Dec 15, 2017", "Star Wars Ep. V111: The Last Jedi", "$1,332,539,889"
-        )
-
-        return Panel(table)
+        return Panel(self.table)
 
     def CreateWork(self, work, category) -> None:
-        self.WorkController.AddNewWork(work, category)
+        workItem = self.WorkController.AddNewWork(work, category)
+        self.table.add_row(str(workItem.workID), str(workItem.creationDate), workItem.description, workItem.category)
         self.userMessageView.ShowUserMessage(f"Work created : {work}")
         timer = threading.Timer(5, self.userMessageView.RemoveMessage)
         timer.start()
+
+    def GetWorkByID(self, id):
+        item = [work for work in self.WorkController.worksList if work.workID == id]
+        if len(item) == 1:
+            return item[0]
+        return None
+
+    def UpdateWork(self, work):
+        self.WorkController.UpdateWork(work)
+        # Need to update table for new values
+        

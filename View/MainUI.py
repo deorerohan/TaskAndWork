@@ -95,8 +95,10 @@ class TasknWork:
                 category = console.input("category : ")
                 self.workView.CreateWork(task, category)
             elif opt == "2":
-                # Update work
-                pass
+                workID = int(console.input("ID to update : "))
+                work = self.workView.GetWorkByID(workID)
+                work.description = console.input(f"Current description : {work.description} : ")
+                self.workView.UpdateWork(work)
             elif len(opt) > 3:
                 isContinue = False
 

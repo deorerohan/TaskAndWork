@@ -1,5 +1,5 @@
 import sqlite3
-
+import datetime
 
 class WorkDB:
     def __init__(self) -> None:
@@ -17,8 +17,13 @@ class WorkDB:
         return self.cursor.lastrowid
 
     def ReadAllWork(self):
-        return self.cursor.execute("select rowid, * from WorkDB").fetchall()
+        today = str(datetime.date.today())
+        return self.cursor.execute(f'select rowid, * from WorkDB where creationDate like "{today}%"').fetchall()
 
+    def UpdateWork(self, work):
+        # Function to update work in database
+        self.cursor.execute(f'update WorkDB set description="{work.description}", category={work.category} where rowid = {work.workID}')
+    
     def __del__(self):
         self.connect.commit()
         self.connect.close()

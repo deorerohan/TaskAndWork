@@ -24,8 +24,12 @@ class WorkTable:
         self.worksList.append(Work(description, category))
         id = self.db.AddWork(self.worksList[-1])
         self.worksList[-1].SetWorkID(id)
+        return self.worksList[-1]
 
     def ReadAllWork(self) -> None:
         allWork = self.db.ReadAllWork()
         for work in allWork:
             self.worksList.append(Work(work[1], work[2], work[0], work[3]))
+
+    def UpdateWork(self, work):
+        self.db.UpdateWork(work)
